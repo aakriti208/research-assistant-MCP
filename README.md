@@ -2,6 +2,10 @@
 
 A Python MCP server that gives Claude (and any MCP-compatible client) tools to search arXiv papers, summarize them using Claude AI, and manage persistent research notes.
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.10+-blue)
+
 [![asciicast](https://asciinema.org/a/G8fxQJAaVFUe9iq1.svg)](https://asciinema.org/a/G8fxQJAaVFUe9iq1)
 
 ---
