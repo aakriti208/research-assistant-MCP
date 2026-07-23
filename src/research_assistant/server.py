@@ -1,7 +1,6 @@
 """FastMCP Research Assistant Server."""
 
 import json
-import os
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
