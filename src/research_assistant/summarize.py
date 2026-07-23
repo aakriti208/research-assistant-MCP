@@ -25,7 +25,7 @@ _STYLE_PROMPTS = {
 
 
 async def summarize_paper_api(arxiv_id: str, style: str = "concise") -> str:
-    """Fetch a paper's abstract and summarize it using Claude."""
+    """Fetch a paper's abstract and summarize it using Claude or other LLMs."""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
         return (
