@@ -1,6 +1,10 @@
 """FastMCP Research Assistant Server."""
 
+import csv
+import io
 import json
+import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
@@ -232,6 +236,69 @@ def delete_note_tool(note_id: str) -> dict:
         return delete_note(note_id)
     except Exception as e:
         return {"error": str(e)}
+
+
+# ---------------------------------------------------------------------------
+# Export tool
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def export_notes(
+    format: str = "markdown",
+    output_path: str | None = None,
+) -> str:
+    """Export all saved notes to a file in JSON, Markdown, or CSV format.
+
+    Args:
+        format: Export format — "json", "markdown", or "csv".
+        output_path: Full path to write the file. Defaults to
+                     ~/research-exports/notes.<ext>.
+
+    Returns:
+        Path to the exported file.
+    """
+    fmt = format.lower().strip()
+    if fmt not in ("json", "markdown", "csv"):
+        return f"Error: Unknown format {format!r}. Valid options: json, markdown, csv"
+
+    notes = list_notes()
+    if not notes:
+        return "No notes to export."
+
+    ext = "md" if fmt == "markdown" else fmt
+    if output_path:
+        dest = Path(output_path)
+    else:
+        export_dir = Path(os.environ.get("NOTES_DIR", str(Path.home() / "research-exports")))
+        export_dir.mkdir(parents=True, exist_ok=True)
+        dest = export_dir / f"notes.{ext}"
+
+    if fmt == "json":
+        dest.write_text(json.dumps(notes, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    elif fmt == "markdown":
+        lines = ["# Research Notes\n"]
+        for note in notes:
+            lines.append(f"## {note['title']}")
+            if note.get("arxiv_id"):
+                lines.append(f"**arXiv:** {note['arxiv_id']}")
+            if note.get("tags"):
+                lines.append(f"**Tags:** {', '.join(note['tags'])}")
+            lines.append(f"**Created:** {note['created_at'][:10]}")
+            lines.append(f"\n{note['content']}\n")
+            lines.append("---\n")
+        dest.write_text("\n".join(lines), encoding="utf-8")
+
+    elif fmt == "csv":
+        buf = io.StringIO()
+        writer = csv.DictWriter(buf, fieldnames=["id", "title", "arxiv_id", "tags", "content", "created_at", "updated_at"])
+        writer.writeheader()
+        for note in notes:
+            writer.writerow({**note, "tags": "|".join(note.get("tags", []))})
+        dest.write_text(buf.getvalue(), encoding="utf-8")
+
+    return str(dest)
 
 
 # ---------------------------------------------------------------------------

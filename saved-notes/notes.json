@@ -7,5 +7,14 @@
     "tags": [],
     "created_at": "2026-07-23T20:22:30.514159+00:00",
     "updated_at": "2026-07-23T20:22:30.514168+00:00"
+  },
+  {
+    "id": "04ed8e2a-aa4f-4a24-8b95-8f201ddb1f3e",
+    "title": "Attention Is All You Need",
+    "content": "The paper addresses the limitations of recurrent and convolutional neural networks in sequence transduction tasks, such as machine translation, which are difficult to parallelize and computationally expensive. The authors propose the Transformer, a novel architecture that relies entirely on attention mechanisms, eliminating recurrence and convolutions. The Transformer achieves state-of-the-art BLEU scores on English-to-German and English-to-French translation benchmarks while training significantly faster than previous models, and also generalizes effectively to other tasks like English constituency parsing.",
+    "arxiv_id": "1706.03762",
+    "tags": [],
+    "created_at": "2026-07-23T22:31:08.397167+00:00",
+    "updated_at": "2026-07-23T22:31:08.397185+00:00"
   }
 ]
