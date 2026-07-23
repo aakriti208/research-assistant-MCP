@@ -7,7 +7,7 @@ from typing import Any
 import feedparser
 import httpx
 
-ARXIV_API_URL = "http://export.arxiv.org/api/query"
+ARXIV_API_URL = "https://export.arxiv.org/api/query"
 _last_call_time: float = 0.0
 _RATE_LIMIT_SECONDS = 3.0
 
@@ -53,7 +53,7 @@ async def _rate_limited_get(url: str, params: dict) -> httpx.Response:
     elapsed = time.monotonic() - _last_call_time
     if elapsed < _RATE_LIMIT_SECONDS:
         await asyncio.sleep(_RATE_LIMIT_SECONDS - elapsed)
-    async with httpx.AsyncClient(timeout=30) as client:
+    async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
         response = await client.get(url, params=params)
     _last_call_time = time.monotonic()
     response.raise_for_status()

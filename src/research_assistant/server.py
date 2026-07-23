@@ -5,8 +5,8 @@ import json
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
-from .arxiv import get_paper_api, search_arxiv_api
-from .notes import (
+from research_assistant.arxiv import get_paper_api, search_arxiv_api
+from research_assistant.notes import (
     delete_note,
     get_note,
     list_notes,
@@ -14,7 +14,7 @@ from .notes import (
     search_notes,
     update_note,
 )
-from .summarize import summarize_paper_api
+from research_assistant.summarize import summarize_paper_api
 
 load_dotenv()
 

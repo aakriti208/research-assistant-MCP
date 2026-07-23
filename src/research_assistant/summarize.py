@@ -4,7 +4,7 @@ import os
 
 import anthropic
 
-from .arxiv import get_paper_api
+from research_assistant.arxiv import get_paper_api
 
 _STYLE_PROMPTS = {
     "concise": (
