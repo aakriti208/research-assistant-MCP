@@ -1,2 +1,35 @@
+# secrets
 .env
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# virtual envs
+.venv/
+venv/
+env/
+
+# build / dist
+*.egg-info/
+dist/
+build/
+*.egg
+
+# uv
+.uv/
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# notes storage (local data, not for version control)
+.research-assistant/
