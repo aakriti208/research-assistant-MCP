@@ -10,6 +10,33 @@ A Python MCP server that gives Claude (and any MCP-compatible client) tools to s
 
 ---
 
+## Why This Exists
+
+Keeping up with research is hard. arXiv publishes hundreds of papers daily, and the typical workflow is fragmented — search in a browser, open PDFs, copy-paste abstracts into notes, summarize manually, lose track of what you read.
+
+This MCP server fixes that by bringing the entire workflow into your AI assistant:
+
+- **Search** arXiv without leaving Claude
+- **Summarize** papers instantly at whatever depth you need
+- **Save notes** linked to papers, tagged and searchable
+- **Export** everything to Markdown, JSON, or CSV for use in Obsidian, Notion, or a spreadsheet
+
+No browser switching, no copy-pasting, no lost context.
+
+---
+
+## Future Enhancements
+
+- **Semantic search** — embed notes and papers with a vector DB (e.g. ChromaDB) for similarity-based retrieval instead of substring search
+- **PDF ingestion** — download and parse full paper PDFs for richer, section-aware summaries beyond the abstract
+- **Citation graph** — fetch references from Semantic Scholar API and let Claude explore related work
+- **Daily digest** — scheduled tool that searches a saved list of topics and summarizes new papers published that day
+- **Groq / local LLM support** — swap in a different LLM provider via an env var for offline or cost-free summarization
+- **Multi-user notes** — replace `notes.json` with SQLite for concurrent access and better query performance
+- **Obsidian sync** — export notes directly into an Obsidian vault with frontmatter metadata
+
+---
+
 ## Architecture
 
 ```
@@ -158,6 +185,37 @@ The `summarize_paper` and `summarize_and_save` tools support three styles:
 | `concise` | 3 sentences: problem, method, result |
 | `detailed` | Sections: motivation, methods, results, limitations |
 | `eli5` | Plain language explanation for non-experts |
+
+---
+
+## Case Study — The Problem This Solves
+
+### Before
+
+Researching a topic like *"retrieval augmented generation"* used to look like this:
+
+1. Open Google Scholar or arXiv in a browser
+2. Search, scan titles, click a paper
+3. Read the abstract in a new tab
+4. Open another paper in another tab
+5. Mentally (or manually) compare the two
+6. Copy-paste key points into a notes app
+7. Repeat for 10+ papers
+8. Lose track of which paper said what
+
+A single research session could mean **20+ tabs, 45+ minutes**, and notes scattered across different apps — with no clear link between a note and the paper it came from.
+
+### After
+
+With Research Assistant MCP, the same session inside Claude Desktop looks like this:
+
+1. `search_arxiv("retrieval augmented generation", max_results=5)` — get 5 papers instantly
+2. `summarize_and_save("2005.11401", style="concise")` — summarize and save in one call
+3. `summarize_and_save("2312.10997", style="concise")` — do the same for the next paper
+4. `search_notes("retrieval")` — pull up all saved summaries side by side
+5. `export_notes(format="markdown")` — drop everything into Obsidian
+
+**Same research, a fraction of the time, everything in one place.**
 
 ---
 
