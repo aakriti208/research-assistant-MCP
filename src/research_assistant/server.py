@@ -92,6 +92,45 @@ async def summarize_paper(arxiv_id: str, style: str = "concise") -> str:
 
 
 # ---------------------------------------------------------------------------
+# Combined tools
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+async def summarize_and_save(
+    arxiv_id: str,
+    style: str = "concise",
+    tags: list[str] | None = None,
+) -> dict:
+    """Summarize an arXiv paper and save it as a note in one step.
+
+    Args:
+        arxiv_id: The arXiv paper ID (e.g. "2301.00001").
+        style: Summary style — "concise", "detailed", or "eli5".
+        tags: Optional list of tags for the saved note.
+
+    Returns:
+        The saved note with the summary as content.
+    """
+    try:
+        paper = await get_paper_api(arxiv_id)
+    except Exception as e:
+        return {"error": f"Failed to fetch paper: {e}"}
+
+    summary = await summarize_paper_api(arxiv_id, style)
+    if summary.startswith("Error"):
+        return {"error": summary}
+
+    note = save_note(
+        title=paper["title"],
+        content=summary,
+        arxiv_id=arxiv_id,
+        tags=tags,
+    )
+    return note
+
+
+# ---------------------------------------------------------------------------
 # Note tools
 # ---------------------------------------------------------------------------
 
